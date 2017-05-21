@@ -1,0 +1,106 @@
+/*
+ * Copyright (C) 2017 Juan Ramón González González (https://github.com/jrgonzalezg)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-allopen'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+allOpen {
+  annotation('dagger.Module')
+}
+
+android {
+  compileSdkVersion versions.androidCompileSdk
+  buildToolsVersion versions.androidBuildTools
+
+  defaultConfig {
+    applicationId constants.applicationId
+    minSdkVersion versions.androidMinSdk
+    targetSdkVersion versions.androidTargetSdk
+    versionCode constants.applicationVersionCode
+    versionName constants.applicationVersionName
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+
+  compileOptions {
+    sourceCompatibility versions.java
+    targetCompatibility versions.java
+  }
+
+  buildTypes {
+    debug {
+      applicationIdSuffix constants.applicationIdSuffixDebug
+
+      buildConfigField "boolean", "HTTP_LOGGING_ENABLED", "true"
+
+      minifyEnabled true
+      useProguard false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+    release {
+      buildConfigField "boolean", "HTTP_LOGGING_ENABLED", "false"
+
+      minifyEnabled true
+      useProguard true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  sourceSets {
+    androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+  }
+
+  testOptions.unitTests.all {
+    testLogging {
+      events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+  }
+}
+
+dependencies {
+  compile "com.android.support:appcompat-v7:${versions.androidSupport}"
+  compile "com.android.support.constraint:constraint-layout:${versions.constraintLayout}"
+  compile "com.google.dagger:dagger:${versions.dagger}"
+  kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+  compile "com.google.dagger:dagger-android:${versions.dagger}"
+  compile "com.google.dagger:dagger-android-support:${versions.dagger}"
+  kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
+  compile "com.google.code.findbugs:jsr305:${versions.jsr305}"
+  compile "com.squareup.moshi:moshi:${versions.moshi}"
+  compile "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
+  compile "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+  compile "com.squareup.okio:okio:${versions.okio}"
+  compile "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
+  compile "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+  compile "org.funktionale:funktionale-all:${versions.funktionale}"
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${versions.kotlin}"
+  compile "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinxCoroutines}"
+  compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinxCoroutines}"
+
+  androidTestCompile("com.android.support.test.espresso:espresso-core:${versions.espresso}", {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+  androidTestCompile "com.google.code.findbugs:jsr305:${versions.jsr305}"
+  kaptTest "com.google.dagger:dagger-compiler:${versions.dagger}"
+  testCompile "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
+  testCompile "com.squareup.okhttp3:mockwebserver:${versions.okhttp}"
+  testCompile "io.kotlintest:kotlintest:${versions.kotlintest}"
+  testCompile "junit:junit:${versions.junit}"
+  testCompile "org.mockito:mockito-core:${versions.mockito}"
+}

@@ -1,0 +1,86 @@
+/*
+ * Copyright (C) 2017 Juan Ramón González González (https://github.com/jrgonzalezg)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+buildscript {
+  ext.constants = [applicationId           : 'com.github.jrgonzalezg.openlibrary',
+                   applicationIdSuffixDebug: '.debug',
+                   applicationVersionCode  : 1,
+                   applicationVersionName  : '0.0.1-SNAPSHOT',]
+
+  ext.versions = [androidBuildTools   : '25.0.2',
+                  androidCompileSdk   : 25,
+                  androidGradlePlugin : '2.4.0-alpha7',
+                  androidMinSdk       : 21,
+                  androidSupport      : '25.3.1',
+                  androidTargetSdk    : 25,
+                  anko                : '0.10.0',
+                  constraintLayout    : '1.1.0-beta1',
+                  dagger              : '2.11-rc2',
+                  espresso            : '2.2.2',
+                  funktionale         : '1.0.1',
+                  gradle              : '3.5',
+                  gradleVersionsPlugin: '0.14.0',
+                  java                : '1.8',
+                  jsr305              : '3.0.2',
+                  junit               : '4.12',
+                  kotlin              : '1.1.2-3',
+                  kotlintest          : '2.0.2',
+                  kotlinxCoroutines   : '0.15',
+                  mockito             : '2.8.9',
+                  mockitoKotlin       : '1.4.0',
+                  moshi               : '1.5.0',
+                  okio                : '1.13.0',
+                  okhttp              : '3.8.0',
+                  retrofit            : '2.3.0',]
+
+  repositories {
+    jcenter()
+
+    // Google
+    //google()
+    maven { url 'https://maven.google.com' }
+  }
+
+  dependencies {
+    classpath "com.android.tools.build:gradle:${versions.androidGradlePlugin}"
+    classpath "com.github.ben-manes:gradle-versions-plugin:${versions.gradleVersionsPlugin}"
+    classpath "org.jetbrains.kotlin:kotlin-allopen:${versions.kotlin}"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+  }
+}
+
+allprojects {
+  repositories {
+    jcenter()
+
+    // Google
+    //google()
+    maven { url 'https://maven.google.com' }
+  }
+}
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = versions.gradle
+  distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+apply plugin: 'com.github.ben-manes.versions'
+
+apply plugin: 'android-reporting'
