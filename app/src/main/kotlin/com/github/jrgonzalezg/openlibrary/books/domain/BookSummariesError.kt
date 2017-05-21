@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.books.data.repository.datasource
+package com.github.jrgonzalezg.openlibrary.books.domain
 
-import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
-import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
-import com.github.jrgonzalezg.openlibrary.domain.Result
-
-interface BookDataSource {
-  fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>>
+sealed class BookSummariesError {
+  object BookSummariesNotFound : BookSummariesError()
+  object BookSummariesUnavailable : BookSummariesError()
 }

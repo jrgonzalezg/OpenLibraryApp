@@ -16,19 +16,21 @@
 
 package com.github.jrgonzalezg.openlibrary.books.presenter
 
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
 import com.github.jrgonzalezg.openlibrary.books.usecase.GetBookSummariesUseCase
 import com.github.jrgonzalezg.openlibrary.presenter.BasePresenter
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
+import org.funktionale.either.Disjunction
 import javax.inject.Inject
 
 class BooksPresenter @Inject constructor(
     val getBookSummariesUseCase: GetBookSummariesUseCase) : BasePresenter<BooksView>() {
   fun loadBookSummaries() {
     launch(job!! + UI) {
-      val books: List<BookSummary> = getBookSummariesUseCase.getBookSummaries().await()
-      view?.showBookSummaries(books)
+      val bookSummaries: Disjunction<BookSummariesError, List<BookSummary>> = getBookSummariesUseCase.getBookSummaries().await()
+      view?.showBookSummaries(bookSummaries)
     }
   }
 
@@ -40,5 +42,6 @@ class BooksPresenter @Inject constructor(
 }
 
 interface BooksView {
-  fun showBookSummaries(bookSummaries: List<BookSummary>): Unit
+  fun showBookSummaries(
+      bookSummaries: Disjunction<BookSummariesError, List<BookSummary>>): Unit
 }

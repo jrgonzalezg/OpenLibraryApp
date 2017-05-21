@@ -17,14 +17,15 @@
 package com.github.jrgonzalezg.openlibrary.books.data.repository
 
 import com.github.jrgonzalezg.openlibrary.books.data.repository.datasource.CloudBookDataSource
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
-import kotlinx.coroutines.experimental.Deferred
+import com.github.jrgonzalezg.openlibrary.domain.Result
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class BookRepository @Inject constructor(val cloudBookDataSource: CloudBookDataSource) {
-  fun getBookSummaries(): Deferred<List<BookSummary>> {
+  fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
     return cloudBookDataSource.getBookSummaries()
   }
 }

@@ -17,10 +17,14 @@
 package com.github.jrgonzalezg.openlibrary.books.data.repository.datasource
 
 import com.github.jrgonzalezg.openlibrary.app.NetworkIntegrationTests
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
 import io.kotlintest.KTestJUnitRunner
 import io.kotlintest.matchers.beEmpty
+import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldNot
 import kotlinx.coroutines.experimental.runBlocking
+import org.funktionale.either.Disjunction
 import org.junit.runner.RunWith
 
 @RunWith(KTestJUnitRunner::class)
@@ -30,7 +34,10 @@ class CloudBookDataSourceIntegrationTests : NetworkIntegrationTests() {
       val cloudBookDataSource = networkComponent.cloudBookDataSource()
 
       runBlocking {
-        cloudBookDataSource.getBookSummaries().await() shouldNot beEmpty()
+        val result: Disjunction<BookSummariesError, List<BookSummary>> = cloudBookDataSource.getBookSummaries().await()
+
+        result.isRight() shouldBe true
+        result.get() shouldNot beEmpty()
       }
     }
   }

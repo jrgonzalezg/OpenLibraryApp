@@ -16,11 +16,13 @@
 
 package com.github.jrgonzalezg.openlibrary.books.data.repository.datasource
 
-import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
 import com.github.jrgonzalezg.openlibrary.books.data.api.OpenLibraryService
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
+import com.github.jrgonzalezg.openlibrary.domain.Result
 import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
+import org.funktionale.either.Disjunction
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,15 +30,18 @@ import javax.inject.Singleton
 @Singleton
 class CloudBookDataSource @Inject constructor(
     val openLibraryService: OpenLibraryService) : BookDataSource {
-  override fun getBookSummaries(): Deferred<List<BookSummary>> {
+  override fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
     return async(CommonPool) {
       val response: Response<List<BookSummary>> = openLibraryService.getBookSummaries().execute()
-      if (response.isSuccessful && response.body() != null) {
-        response.body()!!
+      if (response.isSuccessful) {
+        val maybeSummaries: List<BookSummary>? = response.body()
+        if (maybeSummaries == null || maybeSummaries.isEmpty()) {
+          Disjunction.left(BookSummariesError.BookSummariesNotFound)
+        } else {
+          Disjunction.right(maybeSummaries)
+        }
       } else {
-        // TODO: Replace the return type with an Either or a sealed class and return a proper error
-        // instead of an empty list here
-        listOf()
+        Disjunction.left(BookSummariesError.BookSummariesUnavailable)
       }
     }
   }

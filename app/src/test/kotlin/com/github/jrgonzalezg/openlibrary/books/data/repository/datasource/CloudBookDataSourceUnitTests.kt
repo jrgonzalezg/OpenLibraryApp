@@ -18,12 +18,14 @@ package com.github.jrgonzalezg.openlibrary.books.data.repository.datasource
 
 import com.github.jrgonzalezg.openlibrary.app.NetworkUnitTests
 import com.github.jrgonzalezg.openlibrary.books.data.api.Endpoints
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
 import io.kotlintest.KTestJUnitRunner
 import io.kotlintest.matchers.shouldBe
 import kotlinx.coroutines.experimental.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
+import org.funktionale.either.Disjunction
 import org.junit.runner.RunWith
 
 @RunWith(KTestJUnitRunner::class)
@@ -41,7 +43,10 @@ class CloudBookDataSourceUnitTests : NetworkUnitTests() {
       val expectedBookSummaries = listOf(book1, book2)
 
       runBlocking {
-        cloudBookDataSource.getBookSummaries().await() shouldBe expectedBookSummaries
+        val result: Disjunction<BookSummariesError, List<BookSummary>> = cloudBookDataSource.getBookSummaries().await()
+
+        result.isRight() shouldBe true
+        result.get() shouldBe expectedBookSummaries
       }
 
       val recordedRequest: RecordedRequest = mockWebServer.takeRequest()

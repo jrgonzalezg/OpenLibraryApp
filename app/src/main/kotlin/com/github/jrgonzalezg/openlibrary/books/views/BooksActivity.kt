@@ -20,11 +20,13 @@ import android.os.Bundle
 import com.github.jrgonzalezg.openlibrary.R
 import com.github.jrgonzalezg.openlibrary.app.BaseActivity
 import com.github.jrgonzalezg.openlibrary.app.MyApplication
-import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
 import com.github.jrgonzalezg.openlibrary.books.BooksActivityModule
 import com.github.jrgonzalezg.openlibrary.books.BooksActivitySubcomponent
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
 import com.github.jrgonzalezg.openlibrary.books.presenter.BooksPresenter
 import com.github.jrgonzalezg.openlibrary.books.presenter.BooksView
+import org.funktionale.either.Disjunction
 import javax.inject.Inject
 
 class BooksActivity : BaseActivity(), BooksView {
@@ -56,7 +58,8 @@ class BooksActivity : BaseActivity(), BooksView {
     this.booksPresenter.dropView(this)
   }
 
-  override fun showBookSummaries(bookSummaries: List<BookSummary>) {
+  override fun showBookSummaries(
+      bookSummaries: Disjunction<BookSummariesError, List<BookSummary>>) {
 
   }
 }

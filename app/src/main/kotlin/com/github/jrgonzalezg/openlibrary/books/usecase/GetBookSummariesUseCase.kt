@@ -17,12 +17,13 @@
 package com.github.jrgonzalezg.openlibrary.books.usecase
 
 import com.github.jrgonzalezg.openlibrary.books.data.repository.BookRepository
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
-import kotlinx.coroutines.experimental.Deferred
+import com.github.jrgonzalezg.openlibrary.domain.Result
 import javax.inject.Inject
 
 class GetBookSummariesUseCase @Inject constructor(val bookRepository: BookRepository) {
-  fun getBookSummaries(): Deferred<List<BookSummary>> {
+  fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
     return bookRepository.getBookSummaries()
   }
 }
