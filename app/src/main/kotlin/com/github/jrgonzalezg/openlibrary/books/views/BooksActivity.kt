@@ -17,6 +17,8 @@
 package com.github.jrgonzalezg.openlibrary.books.views
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.widget.LinearLayoutManager
 import com.github.jrgonzalezg.openlibrary.R
 import com.github.jrgonzalezg.openlibrary.app.BaseActivity
 import com.github.jrgonzalezg.openlibrary.app.MyApplication
@@ -26,10 +28,13 @@ import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
 import com.github.jrgonzalezg.openlibrary.books.presenter.BooksPresenter
 import com.github.jrgonzalezg.openlibrary.books.presenter.BooksView
+import kotlinx.android.synthetic.main.books_activity.coordinatorLayout
+import kotlinx.android.synthetic.main.books_activity.toolbar
+import kotlinx.android.synthetic.main.books_list.booksList
 import org.funktionale.either.Disjunction
 import javax.inject.Inject
 
-class BooksActivity : BaseActivity(), BooksView {
+class BooksActivity : BaseActivity(), BooksListener, BooksView {
   @Inject
   lateinit var booksPresenter: BooksPresenter
 
@@ -43,7 +48,12 @@ class BooksActivity : BaseActivity(), BooksView {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    setContentView(R.layout.activity_books)
+    setContentView(R.layout.books_activity)
+
+    setSupportActionBar(toolbar)
+    toolbar.title = title
+
+    booksList.layoutManager = LinearLayoutManager(this)
   }
 
   override fun onResumeFragments() {
@@ -58,8 +68,19 @@ class BooksActivity : BaseActivity(), BooksView {
     this.booksPresenter.dropView(this)
   }
 
+  override fun onBookSelected(bookSummary: BookSummary) {
+    this.booksPresenter.onBookSelected(bookSummary)
+  }
+
+  override fun openBookScreen(bookSummary: BookSummary) {
+    Snackbar.make(coordinatorLayout, "Clicked book: ${bookSummary.title}",
+        Snackbar.LENGTH_SHORT).show()
+  }
+
   override fun showBookSummaries(
       bookSummaries: Disjunction<BookSummariesError, List<BookSummary>>) {
-
+    if (bookSummaries.isRight()) {
+      booksList.adapter = BooksAdapter(bookSummaries.get(), this)
+    }
   }
 }

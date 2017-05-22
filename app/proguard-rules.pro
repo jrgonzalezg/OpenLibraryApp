@@ -19,6 +19,19 @@
 ##---------------End: ProGuard configuration for Dagger ------------
 
 
+##---------------Begin: ProGuard configuration for Glide ----------
+
+# Based on https://github.com/bumptech/glide#proguard
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+##---------------End: ProGuard configuration for Glide ------------
+
+
 ##---------------Begin: ProGuard configuration for Moshi ----------
 
 # Based on https://github.com/square/moshi#proguard

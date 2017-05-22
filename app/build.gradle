@@ -17,6 +17,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-allopen'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 allOpen {
@@ -76,6 +77,11 @@ android {
 dependencies {
   compile "com.android.support:appcompat-v7:${versions.androidSupport}"
   compile "com.android.support.constraint:constraint-layout:${versions.constraintLayout}"
+  compile "com.android.support:design:${versions.androidSupport}"
+  compile "com.android.support:recyclerview-v7:${versions.androidSupport}"
+  compile "com.android.support:support-v4:${versions.androidSupport}"
+  kapt "com.github.bumptech.glide:compiler:${versions.glide}"
+  compile "com.github.bumptech.glide:glide:${versions.glide}"
   compile "com.google.dagger:dagger:${versions.dagger}"
   kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
   compile "com.google.dagger:dagger-android:${versions.dagger}"

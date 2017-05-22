@@ -14,8 +14,13 @@
   ~ limitations under the License.
   -->
 
-<resources>
-  <string name="app_name">Open Library Kotlin Example</string>
-  <string name="books_activity_label" translatable="false">@string/app_name</string>
-  <string name="book_cover_thumbnail_image_content_description">Book cover thumbnail image</string>
-</resources>
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="24dp"
+    android:viewportHeight="24.0"
+    android:viewportWidth="24.0"
+    android:width="24dp">
+  <path
+      android:fillColor="#80000000"
+      android:pathData="M18,2H6c-1.1,0 -2,0.9 -2,2v16c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2V4c0,-1.1 -0.9,-2 -2,-2zM6,4h5v8l-2.5,-1.5L6,12V4z"/>
+</vector>

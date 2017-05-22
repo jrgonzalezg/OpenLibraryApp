@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.books.domain
+package com.github.jrgonzalezg.openlibrary.books.views
 
-data class BookSummary(val key: String, val title: String, val covers: List<Int>?)
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
+
+interface BooksListener {
+  fun onBookSelected(bookSummary: BookSummary)
+}

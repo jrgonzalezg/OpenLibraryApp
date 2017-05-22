@@ -39,9 +39,14 @@ class BooksPresenter @Inject constructor(
 
     loadBookSummaries()
   }
+
+  fun onBookSelected(bookSummary: BookSummary) {
+    view?.openBookScreen(bookSummary)
+  }
 }
 
 interface BooksView {
+  fun openBookScreen(bookSummary: BookSummary): Unit
   fun showBookSummaries(
       bookSummaries: Disjunction<BookSummariesError, List<BookSummary>>): Unit
 }

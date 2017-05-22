@@ -31,6 +31,7 @@ buildscript {
                   dagger              : '2.11-rc2',
                   espresso            : '2.2.2',
                   funktionale         : '1.0.1',
+                  glide               : '4.0.0-RC0',
                   gradle              : '3.5',
                   gradleVersionsPlugin: '0.14.0',
                   java                : '1.8',
