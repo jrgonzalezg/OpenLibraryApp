@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.presenter
+package com.github.jrgonzalezg.openlibrary.books.database
 
-import kotlinx.coroutines.experimental.Job
+import android.arch.persistence.room.TypeConverter
 
-abstract class BasePresenter<V> {
-  protected var job: Job? = null
-  protected var view: V? = null
+class Converters {
+  @TypeConverter
+  fun intListFromCommaSeparatedString(commaSeparatedString: String?): List<Int>? =
+      commaSeparatedString?.split(",")?.map(String::toInt)
 
-  open fun takeView(view: V) {
-    this.view = view
-
-    job = Job()
-  }
-
-  open fun dropView(view: V) {
-    job?.cancel()
-
-    this.view = null
-  }
+  @TypeConverter
+  fun intListToCommaSeparatedString(intList: List<Int>?): String? =
+      intList?.joinToString(separator = ",")
 }

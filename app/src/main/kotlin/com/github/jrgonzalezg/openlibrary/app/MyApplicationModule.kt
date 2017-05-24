@@ -16,6 +16,7 @@
 
 package com.github.jrgonzalezg.openlibrary.app
 
+import com.github.jrgonzalezg.openlibrary.database.MyApplicationDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -25,4 +26,9 @@ class MyApplicationModule(val myApplication: MyApplication) {
   @Provides
   @Singleton
   fun provideMyApplication(): MyApplication = myApplication
+
+  @Provides
+  @Singleton
+  fun provideMyApplicationDatabase(): MyApplicationDatabase =
+      MyApplicationDatabase.createPersistentDatabase(myApplication)
 }

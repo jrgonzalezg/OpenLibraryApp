@@ -21,6 +21,7 @@ import com.github.jrgonzalezg.openlibrary.books.BooksActivitySubcomponent
 import com.github.jrgonzalezg.openlibrary.books.data.api.OpenLibraryService
 import com.github.jrgonzalezg.openlibrary.books.data.repository.BookRepository
 import com.github.jrgonzalezg.openlibrary.books.data.repository.datasource.CloudBookDataSource
+import com.github.jrgonzalezg.openlibrary.database.MyApplicationDatabase
 import dagger.Component
 import javax.inject.Singleton
 
@@ -32,6 +33,7 @@ interface MyApplicationComponent {
   fun bookRepository(): BookRepository
   fun cloudBookDataSource(): CloudBookDataSource
   fun myApplication(): MyApplication
+  fun myApplicationDatabase(): MyApplicationDatabase
   fun openLibraryService(): OpenLibraryService
 
   fun newBooksActivitySubcomponent(

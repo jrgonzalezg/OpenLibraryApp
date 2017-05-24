@@ -14,23 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.presenter
+package com.github.jrgonzalezg.openlibrary.books.database
 
-import kotlinx.coroutines.experimental.Job
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 
-abstract class BasePresenter<V> {
-  protected var job: Job? = null
-  protected var view: V? = null
-
-  open fun takeView(view: V) {
-    this.view = view
-
-    job = Job()
-  }
-
-  open fun dropView(view: V) {
-    job?.cancel()
-
-    this.view = null
-  }
-}
+@Entity(tableName = "book_summaries")
+data class BookSummaryEntity(@PrimaryKey val key: String, val title: String, val covers: List<Int>?)

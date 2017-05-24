@@ -26,8 +26,8 @@ import org.funktionale.either.Disjunction
 import javax.inject.Inject
 
 class BooksPresenter @Inject constructor(
-    val getBookSummariesUseCase: GetBookSummariesUseCase) : BasePresenter<BooksView>() {
-  fun loadBookSummaries() {
+    private val getBookSummariesUseCase: GetBookSummariesUseCase) : BasePresenter<BooksView>() {
+  private fun loadBookSummaries() {
     launch(job!! + UI) {
       val bookSummaries: Disjunction<BookSummariesError, List<BookSummary>> = getBookSummariesUseCase.getBookSummaries().await()
       view?.showBookSummaries(bookSummaries)

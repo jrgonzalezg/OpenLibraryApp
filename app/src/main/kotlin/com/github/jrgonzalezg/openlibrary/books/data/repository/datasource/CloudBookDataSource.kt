@@ -29,7 +29,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CloudBookDataSource @Inject constructor(
-    val openLibraryService: OpenLibraryService) : BookDataSource {
+    private val openLibraryService: OpenLibraryService) : BookDataSource {
   override fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
     return async(CommonPool) {
       val response: Response<List<BookSummary>> = openLibraryService.getBookSummaries().execute()

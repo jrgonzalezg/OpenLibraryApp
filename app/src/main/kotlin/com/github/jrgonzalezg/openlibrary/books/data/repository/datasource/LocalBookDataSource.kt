@@ -14,34 +14,35 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.books.data.repository
+package com.github.jrgonzalezg.openlibrary.books.data.repository.datasource
 
-import com.github.jrgonzalezg.openlibrary.books.data.repository.datasource.CloudBookDataSource
-import com.github.jrgonzalezg.openlibrary.books.data.repository.datasource.LocalBookDataSource
+import com.github.jrgonzalezg.openlibrary.books.database.BookSummaryEntity
 import com.github.jrgonzalezg.openlibrary.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
+import com.github.jrgonzalezg.openlibrary.database.MyApplicationDatabase
 import com.github.jrgonzalezg.openlibrary.domain.Result
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
+import org.funktionale.either.Disjunction
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BookRepository @Inject constructor(private val cloudBookDataSource: CloudBookDataSource,
-    private val localBookDataSource: LocalBookDataSource) {
-  fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
+class LocalBookDataSource @Inject constructor(
+    private val myApplicationDatabase: MyApplicationDatabase) : BookDataSource {
+  override fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
     return async(CommonPool) {
-      val localBookSummaries = localBookDataSource.getBookSummaries().await()
-      if (localBookSummaries.isRight()) {
-        localBookSummaries
+      val bookSummaries = myApplicationDatabase.bookSummaryDao().getAll()
+      if (bookSummaries.isEmpty()) {
+        Disjunction.left(BookSummariesError.BookSummariesNotFound)
       } else {
-        val cloudBookSummaries = cloudBookDataSource.getBookSummaries().await()
-        if (cloudBookSummaries.isRight()) {
-          localBookDataSource.insertBookSummaries(cloudBookSummaries.get())
-        }
-
-        cloudBookSummaries
+        Disjunction.right(bookSummaries)
       }
     }
+  }
+
+  fun insertBookSummaries(bookSummaries: List<BookSummary>) {
+    val bookSummaryEntities = bookSummaries.map { BookSummaryEntity(it.key, it.title, it.covers) }
+    myApplicationDatabase.bookSummaryDao().insertOrUpdateAll(bookSummaryEntities)
   }
 }

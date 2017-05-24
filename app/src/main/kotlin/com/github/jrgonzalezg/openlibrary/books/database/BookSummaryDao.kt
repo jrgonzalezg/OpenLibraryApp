@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.presenter
+package com.github.jrgonzalezg.openlibrary.books.database
 
-import kotlinx.coroutines.experimental.Job
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.Query
+import com.github.jrgonzalezg.openlibrary.books.domain.BookSummary
 
-abstract class BasePresenter<V> {
-  protected var job: Job? = null
-  protected var view: V? = null
 
-  open fun takeView(view: V) {
-    this.view = view
+@Dao
+interface BookSummaryDao {
+  @Query("SELECT * FROM book_summaries")
+  fun getAll(): List<BookSummary>
 
-    job = Job()
-  }
-
-  open fun dropView(view: V) {
-    job?.cancel()
-
-    this.view = null
-  }
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertOrUpdateAll(bookSummaries: List<BookSummaryEntity>)
 }

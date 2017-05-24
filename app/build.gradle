@@ -24,6 +24,8 @@ allOpen {
   annotation('dagger.Module')
 }
 
+ext.roomSchemaLocation = "$projectDir/${constants.roomSchemaLocationSubfolder}".toString()
+
 android {
   compileSdkVersion versions.androidCompileSdk
   buildToolsVersion versions.androidBuildTools
@@ -35,6 +37,12 @@ android {
     versionCode constants.applicationVersionCode
     versionName constants.applicationVersionName
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        arguments = ["room.schemaLocation": roomSchemaLocation]
+      }
+    }
   }
 
   compileOptions {
@@ -62,6 +70,7 @@ android {
   }
 
   sourceSets {
+    androidTest.assets.srcDirs += files(roomSchemaLocation)
     androidTest.java.srcDirs += 'src/androidTest/kotlin'
     main.java.srcDirs += 'src/main/kotlin'
     test.java.srcDirs += 'src/test/kotlin'
@@ -75,6 +84,9 @@ android {
 }
 
 dependencies {
+  annotationProcessor "android.arch.persistence.room:compiler:${versions.androidArchitectureComponents}"
+  kapt "android.arch.persistence.room:compiler:${versions.androidArchitectureComponents}"
+  compile "android.arch.persistence.room:runtime:${versions.androidArchitectureComponents}"
   compile "com.android.support:appcompat-v7:${versions.androidSupport}"
   compile "com.android.support.constraint:constraint-layout:${versions.constraintLayout}"
   compile "com.android.support:design:${versions.androidSupport}"

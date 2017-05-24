@@ -10,6 +10,16 @@
 # Add any project specific keep options here:
 
 
+##---------------Begin: ProGuard configuration for Android Architecture Components ----------
+
+# IMPORTANT: There are no proper ProGuard rules for Android Architecture Components yet.
+# We are just keeping everything for now but this needs to be revised.
+
+-keep class android.arch.** { *; }
+
+##---------------End: ProGuard configuration for Android Architecture Components ------------
+
+
 ##---------------Begin: ProGuard configuration for Dagger ----------
 
 # Based on https://github.com/google/dagger/issues/645
