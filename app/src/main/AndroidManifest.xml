@@ -30,7 +30,7 @@
       android:theme="@style/AppTheme">
 
     <activity
-        android:name=".books.views.BooksActivity"
+        android:name=".features.books.views.BooksActivity"
         android:label="@string/books_activity_label"
         android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>

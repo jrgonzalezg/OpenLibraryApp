@@ -17,7 +17,7 @@
 package com.github.jrgonzalezg.openlibrary.app
 
 import com.github.jrgonzalezg.openlibrary.BuildConfig
-import com.github.jrgonzalezg.openlibrary.books.data.api.OpenLibraryService
+import com.github.jrgonzalezg.openlibrary.features.books.data.api.OpenLibraryService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

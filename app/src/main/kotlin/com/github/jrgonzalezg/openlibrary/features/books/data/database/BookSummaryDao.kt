@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.app
+package com.github.jrgonzalezg.openlibrary.features.books.data.database
 
-import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.Query
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 
-@Module
-class MyApplicationModule(val myApplication: MyApplication) {
-  @Provides
-  @Singleton
-  fun provideMyApplication(): MyApplication = myApplication
 
-  @Provides
-  @Singleton
-  fun provideMyApplicationDatabase(): MyApplicationDatabase =
-      MyApplicationDatabase.createPersistentDatabase(myApplication)
+@Dao
+interface BookSummaryDao {
+  @Query("SELECT * FROM book_summaries")
+  fun getAll(): List<BookSummary>
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertOrUpdateAll(bookSummaries: List<BookSummaryEntity>)
 }

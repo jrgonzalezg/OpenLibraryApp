@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.app
+package com.github.jrgonzalezg.openlibrary.features.books.views
 
-import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 
-@Module
-class MyApplicationModule(val myApplication: MyApplication) {
-  @Provides
-  @Singleton
-  fun provideMyApplication(): MyApplication = myApplication
-
-  @Provides
-  @Singleton
-  fun provideMyApplicationDatabase(): MyApplicationDatabase =
-      MyApplicationDatabase.createPersistentDatabase(myApplication)
+interface BooksListener {
+  fun onBookSelected(bookSummary: BookSummary)
 }

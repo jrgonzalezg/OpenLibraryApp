@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.app
+package com.github.jrgonzalezg.openlibrary.features.books.data.database
 
-import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 
-@Module
-class MyApplicationModule(val myApplication: MyApplication) {
-  @Provides
-  @Singleton
-  fun provideMyApplication(): MyApplication = myApplication
-
-  @Provides
-  @Singleton
-  fun provideMyApplicationDatabase(): MyApplicationDatabase =
-      MyApplicationDatabase.createPersistentDatabase(myApplication)
-}
+@Entity(tableName = "book_summaries")
+data class BookSummaryEntity(@PrimaryKey val key: String, val title: String, val covers: List<Int>?)

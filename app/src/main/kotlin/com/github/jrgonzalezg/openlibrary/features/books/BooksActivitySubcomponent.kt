@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.app
+package com.github.jrgonzalezg.openlibrary.features.books
 
-import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import com.github.jrgonzalezg.openlibrary.app.ActivityComponent
+import com.github.jrgonzalezg.openlibrary.app.ActivityScope
+import com.github.jrgonzalezg.openlibrary.features.books.views.BooksActivity
+import dagger.Subcomponent
 
-@Module
-class MyApplicationModule(val myApplication: MyApplication) {
-  @Provides
-  @Singleton
-  fun provideMyApplication(): MyApplication = myApplication
-
-  @Provides
-  @Singleton
-  fun provideMyApplicationDatabase(): MyApplicationDatabase =
-      MyApplicationDatabase.createPersistentDatabase(myApplication)
+@Subcomponent(modules = arrayOf(BooksActivityModule::class))
+@ActivityScope
+interface BooksActivitySubcomponent : ActivityComponent<BooksActivity> {
+  fun inject(booksActivity: BooksActivity)
 }

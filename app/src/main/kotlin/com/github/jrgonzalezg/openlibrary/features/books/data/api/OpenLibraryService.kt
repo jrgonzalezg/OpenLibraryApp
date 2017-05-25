@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.app
+package com.github.jrgonzalezg.openlibrary.features.books.data.api
 
-import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.Headers
 
-@Module
-class MyApplicationModule(val myApplication: MyApplication) {
-  @Provides
-  @Singleton
-  fun provideMyApplication(): MyApplication = myApplication
+object Endpoints {
+  const val BOOK_SUMMARIES_QUERY = "/query.json?type=/type/edition&authors=/authors/OL2162284A&title=&covers="
+}
 
-  @Provides
-  @Singleton
-  fun provideMyApplicationDatabase(): MyApplicationDatabase =
-      MyApplicationDatabase.createPersistentDatabase(myApplication)
+interface OpenLibraryService {
+  @GET(Endpoints.BOOK_SUMMARIES_QUERY)
+  @Headers("Accept: application/json")
+  fun getBookSummaries(): Call<List<BookSummary>>
 }

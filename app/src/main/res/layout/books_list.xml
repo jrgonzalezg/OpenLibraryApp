@@ -26,6 +26,6 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".books.views.BooksActivity"
+    tools:context=".features.books.views.BooksActivity"
     tools:listitem="@layout/books_list_item"
     />

@@ -23,7 +23,7 @@
     android:gravity="center_vertical"
     android:paddingBottom="8dp"
     android:paddingTop="8dp"
-    tools:context=".books.views.BooksActivity"
+    tools:context=".features.books.views.BooksActivity"
     >
 
   <ImageView

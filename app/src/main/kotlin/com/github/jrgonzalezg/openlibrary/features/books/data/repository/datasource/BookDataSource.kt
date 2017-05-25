@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.app
+package com.github.jrgonzalezg.openlibrary.features.books.data.repository.datasource
 
-import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import com.github.jrgonzalezg.openlibrary.domain.Result
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesError
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 
-@Module
-class MyApplicationModule(val myApplication: MyApplication) {
-  @Provides
-  @Singleton
-  fun provideMyApplication(): MyApplication = myApplication
-
-  @Provides
-  @Singleton
-  fun provideMyApplicationDatabase(): MyApplicationDatabase =
-      MyApplicationDatabase.createPersistentDatabase(myApplication)
+interface BookDataSource {
+  fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>>
 }

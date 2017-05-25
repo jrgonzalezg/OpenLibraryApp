@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.app
+package com.github.jrgonzalezg.openlibrary.data.database
 
-import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import android.arch.persistence.room.TypeConverter
 
-@Module
-class MyApplicationModule(val myApplication: MyApplication) {
-  @Provides
-  @Singleton
-  fun provideMyApplication(): MyApplication = myApplication
+class Converters {
+  @TypeConverter
+  fun intListFromCommaSeparatedString(commaSeparatedString: String?): List<Int>? =
+      commaSeparatedString?.split(",")?.map(String::toInt)
 
-  @Provides
-  @Singleton
-  fun provideMyApplicationDatabase(): MyApplicationDatabase =
-      MyApplicationDatabase.createPersistentDatabase(myApplication)
+  @TypeConverter
+  fun intListToCommaSeparatedString(intList: List<Int>?): String? =
+      intList?.joinToString(separator = ",")
 }

@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.app
+package com.github.jrgonzalezg.openlibrary.features.books
 
-import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
+import com.github.jrgonzalezg.openlibrary.app.ActivityModule
+import com.github.jrgonzalezg.openlibrary.features.books.views.BooksActivity
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
 
 @Module
-class MyApplicationModule(val myApplication: MyApplication) {
-  @Provides
-  @Singleton
-  fun provideMyApplication(): MyApplication = myApplication
-
-  @Provides
-  @Singleton
-  fun provideMyApplicationDatabase(): MyApplicationDatabase =
-      MyApplicationDatabase.createPersistentDatabase(myApplication)
-}
+class BooksActivityModule(
+    override val activity: BooksActivity) : ActivityModule<BooksActivity>(activity)

@@ -16,8 +16,8 @@
 
 package com.github.jrgonzalezg.openlibrary.app
 
-import com.github.jrgonzalezg.openlibrary.books.data.api.OpenLibraryService
-import com.github.jrgonzalezg.openlibrary.books.data.repository.datasource.CloudBookDataSource
+import com.github.jrgonzalezg.openlibrary.features.books.data.api.OpenLibraryService
+import com.github.jrgonzalezg.openlibrary.features.books.data.repository.datasource.CloudBookDataSource
 import dagger.Component
 import javax.inject.Singleton
 
