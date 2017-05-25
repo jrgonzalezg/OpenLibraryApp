@@ -16,37 +16,39 @@
 
 package com.github.jrgonzalezg.openlibrary.features.books.presenter
 
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesError
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
-import com.github.jrgonzalezg.openlibrary.features.books.usecase.GetBookSummariesUseCase
+import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
+import com.github.jrgonzalezg.openlibrary.features.books.usecase.GetBookUseCase
 import com.github.jrgonzalezg.openlibrary.presenter.BasePresenter
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.funktionale.either.Disjunction
 import javax.inject.Inject
 
-class BooksPresenter @Inject constructor(
-    private val getBookSummariesUseCase: GetBookSummariesUseCase) : BasePresenter<BooksView>() {
-  private fun loadBookSummaries() {
+class BookPresenter @Inject constructor(
+    private val getBookUseCase: GetBookUseCase) : BasePresenter<BookView>() {
+  var bookKey: String? = null
+
+  private fun loadBook() {
     launch(job!! + UI) {
-      val bookSummaries: Disjunction<BookSummariesError, List<BookSummary>> = getBookSummariesUseCase.getBookSummaries().await()
-      view?.showBookSummaries(bookSummaries)
+      var book: Disjunction<BookError, Book> = Disjunction.left(BookError.BookNotFound)
+
+      // TODO: Improve handling of bookKey and the possibility of it being null
+      bookKey?.let {
+        book = getBookUseCase.getBook(it).await()
+      }
+
+      view?.showBook(book)
     }
   }
 
-  override fun takeView(view: BooksView) {
+  override fun takeView(view: BookView) {
     super.takeView(view)
 
-    loadBookSummaries()
-  }
-
-  fun onBookSelected(bookSummary: BookSummary) {
-    view?.openBookScreen(bookSummary.key)
+    loadBook()
   }
 }
 
-interface BooksView {
-  fun openBookScreen(bookKey: String): Unit
-  fun showBookSummaries(
-      bookSummaries: Disjunction<BookSummariesError, List<BookSummary>>): Unit
+interface BookView {
+  fun showBook(book: Disjunction<BookError, Book>): Unit
 }

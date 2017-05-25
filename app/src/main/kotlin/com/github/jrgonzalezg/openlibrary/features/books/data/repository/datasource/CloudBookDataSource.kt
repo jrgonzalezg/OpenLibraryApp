@@ -18,6 +18,8 @@ package com.github.jrgonzalezg.openlibrary.features.books.data.repository.dataso
 
 import com.github.jrgonzalezg.openlibrary.domain.Result
 import com.github.jrgonzalezg.openlibrary.features.books.data.api.OpenLibraryService
+import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 import kotlinx.coroutines.experimental.CommonPool
@@ -30,15 +32,31 @@ import javax.inject.Singleton
 @Singleton
 class CloudBookDataSource @Inject constructor(
     private val openLibraryService: OpenLibraryService) : BookDataSource {
+  override fun getBook(key: String): Result<BookError, Book> {
+    return async(CommonPool) {
+      val response: Response<Book> = openLibraryService.getBook(key).execute()
+      if (response.isSuccessful) {
+        val maybeBook: Book? = response.body()
+        if (maybeBook == null) {
+          Disjunction.left(BookError.BookNotFound)
+        } else {
+          Disjunction.right(maybeBook)
+        }
+      } else {
+        Disjunction.left(BookError.BookUnavailable)
+      }
+    }
+  }
+
   override fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
     return async(CommonPool) {
       val response: Response<List<BookSummary>> = openLibraryService.getBookSummaries().execute()
       if (response.isSuccessful) {
-        val maybeSummaries: List<BookSummary>? = response.body()
-        if (maybeSummaries == null || maybeSummaries.isEmpty()) {
+        val maybeBookSummaries: List<BookSummary>? = response.body()
+        if (maybeBookSummaries == null || maybeBookSummaries.isEmpty()) {
           Disjunction.left(BookSummariesError.BookSummariesNotFound)
         } else {
-          Disjunction.right(maybeSummaries)
+          Disjunction.right(maybeBookSummaries)
         }
       } else {
         Disjunction.left(BookSummariesError.BookSummariesUnavailable)

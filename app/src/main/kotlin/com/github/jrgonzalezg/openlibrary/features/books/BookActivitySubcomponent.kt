@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.features.books.data.repository.datasource
+package com.github.jrgonzalezg.openlibrary.features.books
 
-import com.github.jrgonzalezg.openlibrary.domain.Result
-import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesError
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
+import com.github.jrgonzalezg.openlibrary.app.ActivityComponent
+import com.github.jrgonzalezg.openlibrary.app.ActivityScope
+import com.github.jrgonzalezg.openlibrary.features.books.views.BookActivity
+import dagger.Subcomponent
 
-interface BookDataSource {
-  fun getBook(key: String): Result<BookError, Book>
-  fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>>
+@Subcomponent(modules = arrayOf(BookActivityModule::class))
+@ActivityScope
+interface BookActivitySubcomponent : ActivityComponent<BookActivity> {
+  fun inject(bookActivity: BookActivity)
 }

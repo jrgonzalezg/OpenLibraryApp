@@ -16,8 +16,8 @@
 
 package com.github.jrgonzalezg.openlibrary.features.books.views
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import com.github.jrgonzalezg.openlibrary.R
 import com.github.jrgonzalezg.openlibrary.app.BaseActivity
@@ -28,7 +28,6 @@ import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesErr
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 import com.github.jrgonzalezg.openlibrary.features.books.presenter.BooksPresenter
 import com.github.jrgonzalezg.openlibrary.features.books.presenter.BooksView
-import kotlinx.android.synthetic.main.books_activity.coordinatorLayout
 import kotlinx.android.synthetic.main.books_activity.toolbar
 import kotlinx.android.synthetic.main.books_list.booksList
 import org.funktionale.either.Disjunction
@@ -72,9 +71,10 @@ class BooksActivity : BaseActivity(), BooksListener, BooksView {
     this.booksPresenter.onBookSelected(bookSummary)
   }
 
-  override fun openBookScreen(bookSummary: BookSummary) {
-    Snackbar.make(coordinatorLayout, "Clicked book: ${bookSummary.title}",
-        Snackbar.LENGTH_SHORT).show()
+  override fun openBookScreen(bookKey: String) {
+    val intent: Intent = BookActivity.getCallingIntent(this, bookKey)
+    // TODO: Add animation
+    startActivity(intent)
   }
 
   override fun showBookSummaries(

@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.features.books.data.database
+package com.github.jrgonzalezg.openlibrary.features.books.usecase
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
+import com.github.jrgonzalezg.openlibrary.domain.Result
+import com.github.jrgonzalezg.openlibrary.features.books.data.repository.BookRepository
+import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
+import javax.inject.Inject
 
-
-@Dao
-interface BookSummaryDao {
-  @Query("SELECT * FROM book_summaries")
-  fun getAll(): List<BookSummary>
-
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertOrUpdateAll(bookSummaries: List<BookSummaryEntity>)
+class GetBookUseCase @Inject constructor(val bookRepository: BookRepository) {
+  fun getBook(key: String): Result<BookError, Book> {
+    return bookRepository.getBook(key)
+  }
 }

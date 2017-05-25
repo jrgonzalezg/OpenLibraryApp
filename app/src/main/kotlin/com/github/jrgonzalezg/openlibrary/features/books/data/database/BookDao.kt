@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.features.books.data.api
+package com.github.jrgonzalezg.openlibrary.features.books.data.database
 
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.Query
 import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Path
 
-object Endpoints {
-  const val BOOK_QUERY = "{key}.json"
-  const val BOOK_SUMMARIES_QUERY = "/query.json?type=/type/edition&authors=/authors/OL2162284A&title=&covers="
-}
+@Dao
+interface BookDao {
+  @Query("SELECT * FROM books WHERE key = :p0")
+  fun getByKey(key: String): Book?
 
-interface OpenLibraryService {
-  @GET(Endpoints.BOOK_QUERY)
-  @Headers("Accept: application/json")
-  fun getBook(@Path("key") key: String): Call<Book>
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertOrUpdate(book: BookEntity)
 
-  @GET(Endpoints.BOOK_SUMMARIES_QUERY)
-  @Headers("Accept: application/json")
-  fun getBookSummaries(): Call<List<BookSummary>>
+  @Query("SELECT * FROM book_summaries")
+  fun getAll(): List<BookSummary>
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertOrUpdateAll(bookSummaries: List<BookSummaryEntity>)
 }

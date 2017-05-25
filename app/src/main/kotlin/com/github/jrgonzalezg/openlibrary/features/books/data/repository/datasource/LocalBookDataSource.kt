@@ -18,7 +18,10 @@ package com.github.jrgonzalezg.openlibrary.features.books.data.repository.dataso
 
 import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
 import com.github.jrgonzalezg.openlibrary.domain.Result
+import com.github.jrgonzalezg.openlibrary.features.books.data.database.BookEntity
 import com.github.jrgonzalezg.openlibrary.features.books.data.database.BookSummaryEntity
+import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 import kotlinx.coroutines.experimental.CommonPool
@@ -30,9 +33,26 @@ import javax.inject.Singleton
 @Singleton
 class LocalBookDataSource @Inject constructor(
     private val myApplicationDatabase: MyApplicationDatabase) : BookDataSource {
+  override fun getBook(key: String): Result<BookError, Book> {
+    return async(CommonPool) {
+      val book = myApplicationDatabase.bookDao().getByKey(key)
+      if (book == null) {
+        Disjunction.left(BookError.BookNotFound)
+      } else {
+        Disjunction.right(book)
+      }
+    }
+  }
+
+
+  fun insertBook(book: Book) {
+    val bookEntity = BookEntity(book.key, book.title, book.covers, book.numberOfPages)
+    myApplicationDatabase.bookDao().insertOrUpdate(bookEntity)
+  }
+
   override fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
     return async(CommonPool) {
-      val bookSummaries = myApplicationDatabase.bookSummaryDao().getAll()
+      val bookSummaries = myApplicationDatabase.bookDao().getAll()
       if (bookSummaries.isEmpty()) {
         Disjunction.left(BookSummariesError.BookSummariesNotFound)
       } else {
@@ -43,6 +63,6 @@ class LocalBookDataSource @Inject constructor(
 
   fun insertBookSummaries(bookSummaries: List<BookSummary>) {
     val bookSummaryEntities = bookSummaries.map { BookSummaryEntity(it.key, it.title, it.covers) }
-    myApplicationDatabase.bookSummaryDao().insertOrUpdateAll(bookSummaryEntities)
+    myApplicationDatabase.bookDao().insertOrUpdateAll(bookSummaryEntities)
   }
 }

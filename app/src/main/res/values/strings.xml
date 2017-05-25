@@ -16,6 +16,9 @@
 
 <resources>
   <string name="app_name">Open Library Kotlin Example</string>
+
+  <string name="book_activity_label" translatable="false">Book details</string>
   <string name="books_activity_label" translatable="false">@string/app_name</string>
+
   <string name="book_cover_thumbnail_image_content_description">Book cover thumbnail image</string>
 </resources>

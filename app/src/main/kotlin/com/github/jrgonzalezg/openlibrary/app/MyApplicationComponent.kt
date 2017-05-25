@@ -17,6 +17,8 @@
 package com.github.jrgonzalezg.openlibrary.app
 
 import com.github.jrgonzalezg.openlibrary.data.database.MyApplicationDatabase
+import com.github.jrgonzalezg.openlibrary.features.books.BookActivityModule
+import com.github.jrgonzalezg.openlibrary.features.books.BookActivitySubcomponent
 import com.github.jrgonzalezg.openlibrary.features.books.BooksActivityModule
 import com.github.jrgonzalezg.openlibrary.features.books.BooksActivitySubcomponent
 import com.github.jrgonzalezg.openlibrary.features.books.data.api.OpenLibraryService
@@ -35,6 +37,9 @@ interface MyApplicationComponent {
   fun myApplication(): MyApplication
   fun myApplicationDatabase(): MyApplicationDatabase
   fun openLibraryService(): OpenLibraryService
+
+  fun newBookActivitySubcomponent(
+      bookActivityModule: BookActivityModule): BookActivitySubcomponent
 
   fun newBooksActivitySubcomponent(
       booksActivityModule: BooksActivityModule): BooksActivitySubcomponent

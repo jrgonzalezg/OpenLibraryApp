@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-package com.github.jrgonzalezg.openlibrary.features.books.data.repository.datasource
+package com.github.jrgonzalezg.openlibrary.features.books.domain
 
-import com.github.jrgonzalezg.openlibrary.domain.Result
-import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesError
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
-
-interface BookDataSource {
-  fun getBook(key: String): Result<BookError, Book>
-  fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>>
-}
+data class Book(val key: String, val title: String, val covers: List<Int>?, val numberOfPages: Int)

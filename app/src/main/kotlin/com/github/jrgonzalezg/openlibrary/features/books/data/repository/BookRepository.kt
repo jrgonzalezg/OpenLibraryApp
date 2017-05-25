@@ -19,6 +19,8 @@ package com.github.jrgonzalezg.openlibrary.features.books.data.repository
 import com.github.jrgonzalezg.openlibrary.domain.Result
 import com.github.jrgonzalezg.openlibrary.features.books.data.repository.datasource.CloudBookDataSource
 import com.github.jrgonzalezg.openlibrary.features.books.data.repository.datasource.LocalBookDataSource
+import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
+import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesError
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 import kotlinx.coroutines.experimental.CommonPool
@@ -29,6 +31,22 @@ import javax.inject.Singleton
 @Singleton
 class BookRepository @Inject constructor(private val cloudBookDataSource: CloudBookDataSource,
     private val localBookDataSource: LocalBookDataSource) {
+  fun getBook(key: String): Result<BookError, Book> {
+    return async(CommonPool) {
+      val localBook = localBookDataSource.getBook(key).await()
+      if (localBook.isRight()) {
+        localBook
+      } else {
+        val cloudBook = cloudBookDataSource.getBook(key).await()
+        if (cloudBook.isRight()) {
+          localBookDataSource.insertBook(cloudBook.get())
+        }
+
+        cloudBook
+      }
+    }
+  }
+
   fun getBookSummaries(): Result<BookSummariesError, List<BookSummary>> {
     return async(CommonPool) {
       val localBookSummaries = localBookDataSource.getBookSummaries().await()

@@ -21,13 +21,14 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
-import com.github.jrgonzalezg.openlibrary.features.books.data.database.BookSummaryDao
+import com.github.jrgonzalezg.openlibrary.features.books.data.database.BookDao
+import com.github.jrgonzalezg.openlibrary.features.books.data.database.BookEntity
 import com.github.jrgonzalezg.openlibrary.features.books.data.database.BookSummaryEntity
 
-@Database(entities = arrayOf(BookSummaryEntity::class), version = 1)
+@Database(entities = arrayOf(BookEntity::class, BookSummaryEntity::class), version = 1)
 @TypeConverters(Converters::class)
 abstract class MyApplicationDatabase : RoomDatabase() {
-  abstract fun bookSummaryDao(): BookSummaryDao
+  abstract fun bookDao(): BookDao
 
   companion object {
     private const val DB_NAME = "books.db"
