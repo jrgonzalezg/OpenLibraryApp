@@ -21,7 +21,7 @@ buildscript {
                    applicationVersionName     : '0.0.1-SNAPSHOT',
                    roomSchemaLocationSubfolder: "schemas",]
 
-  ext.versions = [androidBuildTools            : '25.0.2',
+  ext.versions = [androidBuildTools            : '25.0.3',
                   androidArchitectureComponents: '1.0.0-alpha1',
                   androidCompileSdk            : 25,
                   androidGradlePlugin          : '2.4.0-alpha7',
@@ -30,12 +30,12 @@ buildscript {
                   androidTargetSdk             : 25,
                   anko                         : '0.10.0',
                   constraintLayout             : '1.1.0-beta1',
-                  dagger                       : '2.11-rc2',
+                  dagger                       : '2.11',
                   espresso                     : '2.2.2',
                   funktionale                  : '1.0.1',
                   glide                        : '4.0.0-RC0',
                   gradle                       : '3.5',
-                  gradleVersionsPlugin         : '0.14.0',
+                  gradleVersionsPlugin         : '0.15.0',
                   java                         : JavaVersion.VERSION_1_8,
                   jsr305                       : '3.0.2',
                   junit                        : '4.12',
