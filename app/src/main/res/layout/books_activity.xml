@@ -37,6 +37,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:contentInsetStart="@dimen/abc_action_bar_content_inset_with_nav"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         />
 

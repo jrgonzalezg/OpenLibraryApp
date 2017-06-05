@@ -18,7 +18,6 @@ package com.github.jrgonzalezg.openlibrary.features.books.views
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import com.github.jrgonzalezg.openlibrary.R
 import com.github.jrgonzalezg.openlibrary.app.BaseActivity
 import com.github.jrgonzalezg.openlibrary.app.MyApplication
@@ -52,7 +51,7 @@ class BooksActivity : BaseActivity(), BooksListener, BooksView {
     setSupportActionBar(toolbar)
     toolbar.title = title
 
-    booksList.layoutManager = LinearLayoutManager(this)
+    booksList.setHasFixedSize(true)
   }
 
   override fun onResumeFragments() {

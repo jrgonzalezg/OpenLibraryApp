@@ -15,8 +15,9 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,17 +31,24 @@
       android:id="@+id/bookCoverThumbnailImageView"
       android:layout_width="@dimen/book_cover_thumbnail_size"
       android:layout_height="@dimen/book_cover_thumbnail_size"
-      android:layout_marginEnd="16dp"
+      android:layout_marginStart="@dimen/abc_action_bar_content_inset_material"
       android:contentDescription="@string/book_cover_thumbnail_image_content_description"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       tools:src="@drawable/ic_book"
       />
 
   <TextView
       android:id="@+id/bookTitleTextView"
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/abc_action_bar_content_inset_with_nav"
       android:textAppearance="?attr/textAppearanceListItem"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       tools:text="This is the book title"
       />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

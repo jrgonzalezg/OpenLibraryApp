@@ -16,5 +16,5 @@
   -->
 
 <resources>
-  <dimen name="book_cover_thumbnail_size">80dp</dimen>
+  <dimen name="book_cover_thumbnail_size">40dp</dimen>
 </resources>

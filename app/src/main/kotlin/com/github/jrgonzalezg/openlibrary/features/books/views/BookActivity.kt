@@ -20,6 +20,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.NavUtils
+import android.view.MenuItem
 import com.github.jrgonzalezg.openlibrary.R
 import com.github.jrgonzalezg.openlibrary.app.BaseActivity
 import com.github.jrgonzalezg.openlibrary.app.MyApplication
@@ -55,7 +57,20 @@ class BookActivity : BaseActivity(), BookView {
     setSupportActionBar(toolbar)
     toolbar.title = title
 
+    // Show the Up button in the action bar
+    val actionBar = supportActionBar
+    actionBar?.setDisplayHomeAsUpEnabled(true)
+
     bookKey = intent.getStringExtra(BOOK_KEY_EXTRA)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    val id = item.itemId
+    if (id == android.R.id.home) {
+      NavUtils.navigateUpFromSameTask(this)
+      return true
+    }
+    return super.onOptionsItemSelected(item)
   }
 
   override fun onResumeFragments() {
