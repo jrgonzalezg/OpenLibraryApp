@@ -46,7 +46,8 @@ class LocalBookDataSource @Inject constructor(
 
 
   fun insertBook(book: Book) {
-    val bookEntity = BookEntity(book.key, book.title, book.covers, book.numberOfPages)
+    val bookEntity = BookEntity(book.key, book.title, book.description, book.covers,
+        book.numberOfPages, book.physicalFormat)
     myApplicationDatabase.bookDao().insertOrUpdate(bookEntity)
   }
 

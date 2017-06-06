@@ -16,4 +16,5 @@
 
 package com.github.jrgonzalezg.openlibrary.features.books.domain
 
-data class Book(val key: String, val title: String, val covers: List<Int>?, val numberOfPages: Int)
+data class Book(val key: String, val title: String, val description: String?,
+    val covers: List<Int>?, val numberOfPages: Int?, val physicalFormat: String?)

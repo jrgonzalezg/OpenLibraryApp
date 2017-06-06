@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "49d460d1d97750e6d9a45c58ccda1cdd",
+    "identityHash": "584f0cead8d746452359a6c7e409c46f",
     "entities": [
       {
         "tableName": "books",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` TEXT, `title` TEXT, `covers` TEXT, `numberOfPages` INTEGER, PRIMARY KEY(`key`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` TEXT, `title` TEXT, `description` TEXT, `covers` TEXT, `numberOfPages` INTEGER, `physicalFormat` TEXT, PRIMARY KEY(`key`))",
         "fields": [
           {
             "fieldPath": "key",
@@ -19,6 +19,11 @@
             "affinity": "TEXT"
           },
           {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          },
+          {
             "fieldPath": "covers",
             "columnName": "covers",
             "affinity": "TEXT"
@@ -27,6 +32,11 @@
             "fieldPath": "numberOfPages",
             "columnName": "numberOfPages",
             "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "physicalFormat",
+            "columnName": "physicalFormat",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -70,7 +80,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"49d460d1d97750e6d9a45c58ccda1cdd\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"584f0cead8d746452359a6c7e409c46f\")"
     ]
   }
 }

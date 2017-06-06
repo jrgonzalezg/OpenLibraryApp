@@ -16,24 +16,5 @@
 
 package com.github.jrgonzalezg.openlibrary.features.books.data.api
 
-import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
-import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Path
-
-object Endpoints {
-  const val BOOK_QUERY = "{key}.json"
-  const val BOOK_SUMMARIES_QUERY = "/query.json?type=/type/edition&authors=/authors/OL2162284A&title=&covers="
-}
-
-interface OpenLibraryService {
-  @GET(Endpoints.BOOK_QUERY)
-  @Headers("Accept: application/json")
-  fun getBook(@Path("key") key: String): Call<BookResponse>
-
-  @GET(Endpoints.BOOK_SUMMARIES_QUERY)
-  @Headers("Accept: application/json")
-  fun getBookSummaries(): Call<List<BookSummary>>
-}
+data class BookResponse(val key: String, val title: String, val description: String?,
+    val covers: List<Int>?, val number_of_pages: Int, val physical_format: String?)

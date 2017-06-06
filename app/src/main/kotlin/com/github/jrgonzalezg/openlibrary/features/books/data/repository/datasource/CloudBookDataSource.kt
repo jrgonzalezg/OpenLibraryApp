@@ -17,6 +17,7 @@
 package com.github.jrgonzalezg.openlibrary.features.books.data.repository.datasource
 
 import com.github.jrgonzalezg.openlibrary.domain.Result
+import com.github.jrgonzalezg.openlibrary.features.books.data.api.BookResponse
 import com.github.jrgonzalezg.openlibrary.features.books.data.api.OpenLibraryService
 import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
@@ -34,13 +35,16 @@ class CloudBookDataSource @Inject constructor(
     private val openLibraryService: OpenLibraryService) : BookDataSource {
   override fun getBook(key: String): Result<BookError, Book> {
     return async(CommonPool) {
-      val response: Response<Book> = openLibraryService.getBook(key).execute()
+      val response: Response<BookResponse> = openLibraryService.getBook(key).execute()
       if (response.isSuccessful) {
-        val maybeBook: Book? = response.body()
-        if (maybeBook == null) {
+        val maybeBookResponse: BookResponse? = response.body()
+        if (maybeBookResponse == null) {
           Disjunction.left(BookError.BookNotFound)
         } else {
-          Disjunction.right(maybeBook)
+          Disjunction.right(
+              Book(maybeBookResponse.key, maybeBookResponse.title, maybeBookResponse.description,
+                  maybeBookResponse.covers, maybeBookResponse.number_of_pages,
+                  maybeBookResponse.physical_format))
         }
       } else {
         Disjunction.left(BookError.BookUnavailable)
