@@ -56,7 +56,7 @@ class BooksAdapter(private val bookSummaries: List<BookSummary>,
 
     val firstCoverThumbnailUrl = getFirstCoverThumbnailUrl(bookSummary.covers)
     if (firstCoverThumbnailUrl != null) {
-      Glide.with(holder.view).load(getFirstCoverThumbnailUrl(bookSummary.covers)).apply(
+      Glide.with(holder.view).load(firstCoverThumbnailUrl).apply(
           RequestOptions().placeholder(R.drawable.ic_book)).into(holder.bookCoverThumbnailImageView)
     } else {
       holder.bookCoverThumbnailImageView.setImageResource(R.drawable.ic_book)

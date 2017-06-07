@@ -38,7 +38,9 @@ class BookPresenter @Inject constructor(
         book = getBookUseCase.getBook(it).await()
       }
 
-      view?.showBook(book)
+      view?.let {
+        book.fold(it::showBookError, it::showBook)
+      }
     }
   }
 
@@ -50,5 +52,6 @@ class BookPresenter @Inject constructor(
 }
 
 interface BookView {
-  fun showBook(book: Disjunction<BookError, Book>): Unit
+  fun showBook(book: Book): Unit
+  fun showBookError(bookError: BookError): Unit
 }

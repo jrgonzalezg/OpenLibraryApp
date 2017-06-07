@@ -16,7 +16,6 @@
 
 package com.github.jrgonzalezg.openlibrary.features.books.data.api
 
-import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 import retrofit2.Call
 import retrofit2.http.GET

@@ -22,6 +22,8 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.NavUtils
 import android.view.MenuItem
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.github.jrgonzalezg.openlibrary.R
 import com.github.jrgonzalezg.openlibrary.app.BaseActivity
 import com.github.jrgonzalezg.openlibrary.app.MyApplication
@@ -31,9 +33,13 @@ import com.github.jrgonzalezg.openlibrary.features.books.domain.Book
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookError
 import com.github.jrgonzalezg.openlibrary.features.books.presenter.BookPresenter
 import com.github.jrgonzalezg.openlibrary.features.books.presenter.BookView
-import kotlinx.android.synthetic.main.books_activity.coordinatorLayout
-import kotlinx.android.synthetic.main.books_activity.toolbar
-import org.funktionale.either.Disjunction
+import kotlinx.android.synthetic.main.book_activity.coordinatorLayout
+import kotlinx.android.synthetic.main.book_activity.toolbar
+import kotlinx.android.synthetic.main.book_details.bookCoverImageView
+import kotlinx.android.synthetic.main.book_details.bookDescriptionTextView
+import kotlinx.android.synthetic.main.book_details.bookNumberOfPagesTextView
+import kotlinx.android.synthetic.main.book_details.bookPhysicalFormatTextView
+import kotlinx.android.synthetic.main.book_details.bookTitleTextView
 import javax.inject.Inject
 
 class BookActivity : BaseActivity(), BookView {
@@ -86,9 +92,36 @@ class BookActivity : BaseActivity(), BookView {
     this.bookPresenter.dropView(this)
   }
 
-  override fun showBook(book: Disjunction<BookError, Book>) {
-    // TODO: Add proper views for the book details
-    Snackbar.make(coordinatorLayout, "Should show book: $book}", Snackbar.LENGTH_LONG).show()
+  fun getFirstCoverUrl(covers: List<Int>?): String? {
+    val firstCoverId: Int? = covers?.firstOrNull()
+
+    if (firstCoverId != null) {
+      return "http://covers.openlibrary.org/b/id/${firstCoverId}-L.jpg"
+    } else {
+      return null
+    }
+  }
+
+  override fun showBook(book: Book) {
+    // TODO: Improve layout / views for the book details
+    val firstCoverUrl = getFirstCoverUrl(book.covers)
+    if (firstCoverUrl != null) {
+      Glide.with(this).load(firstCoverUrl).apply(
+          RequestOptions().placeholder(R.drawable.ic_book)).into(bookCoverImageView)
+    } else {
+      bookCoverImageView.setImageResource(R.drawable.ic_book)
+    }
+
+    bookTitleTextView.text = book.title
+    bookDescriptionTextView.text = book.description
+    bookNumberOfPagesTextView.text = book.numberOfPages.toString()
+    bookPhysicalFormatTextView.text = book.physicalFormat
+  }
+
+  override fun showBookError(bookError: BookError) {
+    // TODO: Add proper views for the book error
+    Snackbar.make(coordinatorLayout, "Should show book error: $bookError}",
+        Snackbar.LENGTH_LONG).show()
   }
 
   companion object {

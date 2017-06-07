@@ -18,6 +18,7 @@ package com.github.jrgonzalezg.openlibrary.features.books.views
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import com.github.jrgonzalezg.openlibrary.R
 import com.github.jrgonzalezg.openlibrary.app.BaseActivity
 import com.github.jrgonzalezg.openlibrary.app.MyApplication
@@ -27,9 +28,9 @@ import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummariesErr
 import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 import com.github.jrgonzalezg.openlibrary.features.books.presenter.BooksPresenter
 import com.github.jrgonzalezg.openlibrary.features.books.presenter.BooksView
+import kotlinx.android.synthetic.main.book_activity.coordinatorLayout
 import kotlinx.android.synthetic.main.books_activity.toolbar
 import kotlinx.android.synthetic.main.books_list.booksList
-import org.funktionale.either.Disjunction
 import javax.inject.Inject
 
 class BooksActivity : BaseActivity(), BooksListener, BooksView {
@@ -76,10 +77,13 @@ class BooksActivity : BaseActivity(), BooksListener, BooksView {
     startActivity(intent)
   }
 
-  override fun showBookSummaries(
-      bookSummaries: Disjunction<BookSummariesError, List<BookSummary>>) {
-    if (bookSummaries.isRight()) {
-      booksList.adapter = BooksAdapter(bookSummaries.get(), this)
-    }
+  override fun showBookSummaries(bookSummaries: List<BookSummary>) {
+    booksList.adapter = BooksAdapter(bookSummaries, this)
+  }
+
+  override fun showBookSummariesError(bookSummariesError: BookSummariesError) {
+    // TODO: Add proper views for the book summaries error
+    Snackbar.make(coordinatorLayout, "Should show book summaries error: $bookSummariesError}",
+        Snackbar.LENGTH_LONG).show()
   }
 }

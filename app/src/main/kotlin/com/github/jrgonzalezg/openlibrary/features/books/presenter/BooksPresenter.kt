@@ -30,7 +30,10 @@ class BooksPresenter @Inject constructor(
   private fun loadBookSummaries() {
     launch(job!! + UI) {
       val bookSummaries: Disjunction<BookSummariesError, List<BookSummary>> = getBookSummariesUseCase.getBookSummaries().await()
-      view?.showBookSummaries(bookSummaries)
+
+      view?.let {
+        bookSummaries.fold(it::showBookSummariesError, it::showBookSummaries)
+      }
     }
   }
 
@@ -47,6 +50,6 @@ class BooksPresenter @Inject constructor(
 
 interface BooksView {
   fun openBookScreen(bookKey: String): Unit
-  fun showBookSummaries(
-      bookSummaries: Disjunction<BookSummariesError, List<BookSummary>>): Unit
+  fun showBookSummaries(bookSummaries: List<BookSummary>): Unit
+  fun showBookSummariesError(bookSummariesError: BookSummariesError): Unit
 }
