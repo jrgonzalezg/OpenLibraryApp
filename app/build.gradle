@@ -26,6 +26,13 @@ allOpen {
 
 ext.roomSchemaLocation = "$projectDir/${constants.roomSchemaLocationSubfolder}".toString()
 
+// Configure annotation processors
+kapt {
+  arguments {
+    arg("room.schemaLocation", roomSchemaLocation)
+  }
+}
+
 android {
   compileSdkVersion versions.androidCompileSdk
   buildToolsVersion versions.androidBuildTools
@@ -37,12 +44,6 @@ android {
     versionCode constants.applicationVersionCode
     versionName constants.applicationVersionName
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-    javaCompileOptions {
-      annotationProcessorOptions {
-        arguments = ["room.schemaLocation": roomSchemaLocation]
-      }
-    }
   }
 
   compileOptions {
@@ -84,7 +85,6 @@ android {
 }
 
 dependencies {
-  annotationProcessor "android.arch.persistence.room:compiler:${versions.androidArchitectureComponents}"
   kapt "android.arch.persistence.room:compiler:${versions.androidArchitectureComponents}"
   compile "android.arch.persistence.room:runtime:${versions.androidArchitectureComponents}"
   compile "com.android.support:appcompat-v7:${versions.androidSupport}"
@@ -120,5 +120,6 @@ dependencies {
   testCompile "com.squareup.okhttp3:mockwebserver:${versions.okhttp}"
   testCompile "io.kotlintest:kotlintest:${versions.kotlintest}"
   testCompile "junit:junit:${versions.junit}"
+  testCompile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${versions.kotlin}"
   testCompile "org.mockito:mockito-core:${versions.mockito}"
 }
