@@ -25,7 +25,7 @@ import com.github.jrgonzalezg.openlibrary.features.books.domain.BookSummary
 
 @Dao
 interface BookDao {
-  @Query("SELECT * FROM books WHERE key = :p0")
+  @Query("SELECT * FROM books WHERE key = :key")
   fun getByKey(key: String): Book?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
